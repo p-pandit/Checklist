@@ -1,0 +1,304 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+
+ <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <title>E_checklist</title>
+  <!-- Bootstrap core CSS-->
+ <link href="{% static 'bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+  <!-- Custom fonts for this template-->
+  <link href="{% static 'font-awesome/css/font-awesome.min.css' %}" rel="stylesheet" type="text/css">
+  <!-- Page level plugin CSS-->
+ <link href="{% static 'datatables/dataTables.bootstrap4.css' %}" rel="stylesheet">
+  <!-- Custom styles for this template-->
+  <link href="{% static 'css/sb-admin.css' %}" rel="stylesheet">
+
+
+
+	<meta http-equiv="Content-type" content="text/html; charset=utf-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+
+	<!--<link rel="shortcut icon" type="image/png" href="/media/images/favicon.png">
+	<link rel="alternate" type="application/rss+xml" title="RSS 2.0" href="http://www.datatables.net/rss.xml">
+	<link rel="stylesheet" type="text/css" href="/media/css/site-examples.css?_=19472395a2969da78c8a4c707e72123a">  -->
+	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
+	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.5.2/css/buttons.dataTables.min.css">
+
+
+	<!--	<style type="text/css" class="init"></style>
+	<script type="text/javascript" src="/media/js/site.js?_=5e8f232afab336abc1a1b65046a73460"></script>
+	<script type="text/javascript" src="/media/js/dynamic.php?comments-page=extensions%2Fbuttons%2Fexamples%2Fhtml5%2FexcelCellShading.html" async></script> -->
+	<script type="text/javascript" language="javascript" src="https://code.jquery.com/jquery-3.3.1.js"></script>
+	<script type="text/javascript" language="javascript" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+	<script type="text/javascript" language="javascript" src="https://cdn.datatables.net/buttons/1.5.2/js/dataTables.buttons.min.js"></script>
+	<script type="text/javascript" language="javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+	<script type="text/javascript" language="javascript" src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.html5.min.js"></script>
+	<script type="text/javascript" language="javascript" src="../../../../examples/resources/demo.js"></script>
+	<script type="text/javascript" class="init"></script>
+<script>
+$(document).ready(function() {
+    $('#example').DataTable({
+
+	"lengthMenu": [[8, -1], [8, "All"]],
+     "ordering": false
+    });
+});
+</script>
+
+ <script type="text/javascript">
+        var tableToExcel = (function () {
+            var uri = 'data:application/vnd.ms-excel;base64,'
+                , template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head><body><table>{table}</table></body></html>'
+                , base64 = function (s) { return window.btoa(unescape(encodeURIComponent(s))) }
+                , format = function (s, c) { return s.replace(/{(\w+)}/g, function (m, p) { return c[p]; }) }
+            return function (table, name) {
+                if (!table.nodeType) table = document.getElementById(table)
+                var ctx = { worksheet: name || 'Worksheet', table: table.innerHTML }
+                var blob = new Blob([format(template, ctx)]);
+                var blobURL = window.URL.createObjectURL(blob);
+
+                if (ifIE()) {
+                    csvData = table.innerHTML;
+                    if (window.navigator.msSaveBlob) {
+                        var blob = new Blob([format(template, ctx)], {
+                            type: "text/html"
+                        });
+                        navigator.msSaveBlob(blob, '' + name + '.xls');
+                    }
+                }
+                else
+					 var link = document.createElement("a");
+				     var date="<?php echo $today?>";
+					 var stn="<?php echo $stn?>";
+                     link.download = date + stn + ".xls";
+                     link.href = uri + base64(format(template, ctx));
+                     link.click();
+              //  window.location.href = uri + base64(format(template, ctx))
+            }
+        })()
+
+        function ifIE() {
+            var isIE11 = navigator.userAgent.indexOf(".NET CLR") > -1;
+            var isIE11orLess = isIE11 || navigator.appVersion.indexOf("MSIE") != -1;
+            return isIE11orLess;
+        }
+
+</script>
+</head>
+<body >
+
+
+
+	<div class="content">
+    <div class="container-fluid">
+	</br>
+    <!-- Example DataTables Card-->
+      <div class="card mb-3">
+        <div class="card-header">
+		  <i class="fa fa-table">station no 21</i>
+		   <a href="{% url 'logout' %}" style="float:right" >logout</a>
+            <center>Delivery Date:{{date}}</center>
+		    <center>Logger Name:{{user}}</center>
+        </div>
+ <center><div>  <input type="button" onclick="tableToExcel('example', 'Export HTML Table to Excel')" value="Excel" /></div></center>
+
+
+<table id='example' class='table table-striped table-bordered' style='width:100%' cellspacing='0'>
+    <thead>
+
+	<tr>
+ {% if data.Delar_Name %}
+		<th>{{data.Delar_Name}}</th>
+ {% endif %}
+         {% if data.var1 %}
+        <th>{{data.var1}}</th>
+ {% endif %}
+         {% if data.var2 %}
+        <th>{{data.var2}}</th>
+ {% endif %}
+         {% if data.var3 %}
+        <th>{{data.var3}}</th>
+ {% endif %}
+         {% if data.var4 %}
+        <th>{{data.var4}}</th>
+ {% endif %}
+        {% if data.var5 %}
+        <th>{{data.var5}}</th>
+ {% endif %}
+         {% if data.var6 %}
+        <th>{{data.var6}}</th>
+ {% endif %}
+         {% if data.var7 %}
+        <th>{{data.var7}}</th>
+ {% endif %}
+         {% if data.var8 %}
+        <th>{{data.var8}}</th>
+ {% endif %}
+         {% if data.var9 %}
+        <th>{{data.var9}}</th>
+ {% endif %}
+         {% if data.var10 %}
+        <th>{{data.var10}}</th>
+ {% endif %}
+         {% if data.var11 %}
+        <th>{{data.var11}}</th>
+ {% endif %}
+         {% if data.var12 %}
+        <th>{{data.var12}}</th>
+ {% endif %}
+
+         {% if data.var13 %}
+        <th>{{data.var13}}</th>
+ {% endif %}
+
+         {% if data.var14 %}
+        <th>{{data.var14}}</th>
+ {% endif %}
+
+        {% if data.var15 %}
+        <th>{{data.var15}}</th>
+        {% endif %}
+
+
+
+
+	</tr>
+
+    </thead>
+    <tbody>
+
+    {% for i in stn %}
+<tr>
+     {% if i.Delar_Name %}
+		<th class="y">{{i.Delar_Name}}</th>
+       {% endif %}
+    {% if i.var1 %}
+        <th class="x">{{i.var1}}</th>
+       {% endif %}
+    {% if i.var2 %}
+        <th class="x">{{i.var2}}</th>
+       {% endif %}
+    {% if i.var3 %}
+        <th class="x">{{i.var3}}</th>
+       {% endif %}
+    {% if i.var4 %}
+        <th class="x">{{i.var4}}</th>
+       {% endif %}
+    {% if i.Delar_Name %}
+        <th class="x">{{i.var5}}</th>
+       {% endif %}
+    {% if i.var6 %}
+        <th class="x">{{i.var6}}</th>
+       {% endif %}
+    {% if i.var7 %}
+        <th class="x">{{i.var7}}</th>
+       {% endif %}
+    {% if i.var8 %}
+        <th class="x">{{i.var8}}</th>
+       {% endif %}
+    {% if i.var9 %}
+        <th class="x">{{i.var9}}</th>
+       {% endif %}
+    {% if i.var10 %}
+        <th class="x">{{i.var10}}</th>
+       {% endif %}
+    {% if i.var11 %}
+        <th class="x">{{i.var11}}</th>
+       {% endif %}
+    {% if i.var12 %}
+        <th class="x">{{i.var12}}</th>
+       {% endif %}
+    {% if i.var13 %}
+        <th class="x">{{i.var13}}</th>
+       {% endif %}
+    {% if i.var14 %}
+        <th class="x">{{i.var14}}</th>
+   {% endif %}
+    {% if i.var15 %}
+        <th class="x">{{i.var15}}</th>
+    {% endif %}
+
+</tr>
+
+    {% endfor %}
+    </tbody>
+
+</table>
+    </div>
+    </div>
+    </div>
+
+</body>
+
+
+<script>
+ $(".x").click(function(event){
+            console.log(event.target);
+            console.log($(event.target).text());
+
+			if($(event.target).text()=='True')
+
+			{
+			var clicked = event.target;
+			clicked.style.backgroundColor = 'white';
+			clicked.style.color = 'black';
+			}
+			else if($(event.target).text()=='' )
+			{
+			var clicked = event.target;
+			clicked.style.backgroundColor = 'white';
+			clicked.style.color = 'black';
+			}
+			else
+			{
+			var clicked = event.target;
+			$(this).text($(event.target).text()+"*");             // add star (*) after select cell
+			clicked.style.backgroundColor = 'red';
+			clicked.style.color = 'white';
+			}
+
+
+
+        });
+
+
+	</script>
+
+	<script>
+ $(".y").click(function(event){
+            console.log(event.target);
+            console.log($(event.target).text());
+
+			if($(event.target).text()=='Dealer Name')
+			{
+			var clicked = event.target;
+			clicked.style.backgroundColor = 'white';
+			clicked.style.color = 'black';
+			}
+			/*else if($(event.target).text()=='' )
+			{
+			var clicked = event.target;
+			clicked.style.backgroundColor = 'white';
+			clicked.style.color = 'black';
+			}*/
+			else
+			{
+			var clicked = event.target;
+			$(this).text($(event.target).text());             // add star (*) after select cell
+			clicked.style.backgroundColor = 'blue';
+			clicked.style.color = 'white';
+			}
+
+
+
+        });
+
+
+	</script>
+
+</html>
